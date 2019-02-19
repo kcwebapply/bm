@@ -8,7 +8,7 @@
 
 `bm` is tag-based cli tool for bookmarking.
 
-![sample-demo](image/imemo.gif)
+![sample-demo](bm/bm.gif)
 
 ## Installation
 
@@ -21,35 +21,38 @@ brew install bm
 
 ## Usage
 
-### show memo list
-listing all memo. `imemo a` also available.
-```
-> imemo all 
-----------------------------------------------------------------------------------
-| 1| playing tennis with Mike on Next  Tuesday                                   |
-| 2| meeting at 13:30                                                            |
-----------------------------------------------------------------------------------
+### view bookmarks
+`bm list` `bm ls`
+
+listing all book. `bm ls` also available.
+
+
+
+By `bm ls ${searchWord}` , you can filtering bookmark by title.
+
+
+By `bm -t ${tagName}` , you can search bookmark by tag name.
+
+
+
+### add bookmark
+`bm add ${url}`  `bm a ${url}` 
+you can save bookmark by `bm add` command.
+
+you can set tags (max 3 tags) on your bookmark.
+
+
+## delete bookmark
+`bm delete ${bookmark-id}` `bm d ${bookmark-id}`
+
+
+To delete bookmark on you list, please input bookmark-id that automatically assigned to all bookmark.
+
+you can confirm bookmark-id by `bm ls` command.
+
 ```
 
-### save new memo
-please input what you want to write on memo.
-`imemo s` also available.
-```
-> imemo save "meeting at 13:30"
-----------------------------------------------------------------------------------
-| 2| meeting at 13:30                                                            |
-----------------------------------------------------------------------------------
-memo saved!
 ```
 
-## delete memo
-please input memo's Id which you want to delete.
 
-```
-> imemo d 2
-----------------------------------------------------------------------------------
-| 2| meeting at 13:30                                                            |
-----------------------------------------------------------------------------------
-memo deleted!
-```
 
