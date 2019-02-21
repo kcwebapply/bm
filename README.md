@@ -26,6 +26,9 @@ brew install bm
 
 listing all book. `bm ls` also available.
 
+<img src="image/bm-ls.mov">
+![sample-demo](image/ls.gif)
+
 
 
 By `bm ls ${searchWord}` , you can filtering bookmark by title.
@@ -36,8 +39,10 @@ By `bm -t ${tagName}` , you can search bookmark by tag name.
 
 
 ### add bookmark
-`bm add ${url}`  `bm a ${url}` 
+`bm add ${url}`  `bm a ${url}`
 you can save bookmark by `bm add` command.
+
+![sample-demo](image/add.gif)
 
 you can set tags (max 3 tags) on your bookmark.
 
@@ -45,14 +50,15 @@ you can set tags (max 3 tags) on your bookmark.
 ## delete bookmark
 `bm delete ${bookmark-id}` `bm d ${bookmark-id}`
 
+![sample-demo](image/del.gif)
+
 
 To delete bookmark on you list, please input bookmark-id that automatically assigned to all bookmark.
 
 you can confirm bookmark-id by `bm ls` command.
 
-```
+## open bookmark
+`bm open ${bookmark-id}`
+you can open bookmark by ``
 
-```
-
-
-
+![sample-demo](image/open.gif)
