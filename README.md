@@ -28,13 +28,12 @@ listing all book. `bm ls` also available.
 
 <img src="image/bm-ls.mov">
 ![sample-demo](image/ls.gif)
-
-
-
 By `bm ls ${searchWord}` , you can filtering bookmark by title.
 
 
 By `bm -t ${tagName}` , you can search bookmark by tag name.
+
+![sample-demo](image/tag.gif)
 
 
 
