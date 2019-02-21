@@ -1,5 +1,5 @@
-# bm
-<img  align="right" src="image/imemo.png" width="100px">
+
+<img  src="image/bm.png" width="100px">
 
 [![GoDoc](https://godoc.org/github.com/kcwebapply/imemo?status.svg)](https://godoc.org/github.com/kcwebapply/imemo)
 ![Go Report Card](https://goreportcard.com/badge/github.com/kcwebapply/imemo)
@@ -8,7 +8,9 @@
 
 `bm` is tag-based cli tool for bookmarking.
 
-![sample-demo](bm/bm.gif)
+<img src="image/bm-sample.png" width="1000px"/>
+
+
 
 ## Installation
 
@@ -58,6 +60,6 @@ you can confirm bookmark-id by `bm ls` command.
 
 ## open bookmark
 `bm open ${bookmark-id}`
-you can open bookmark by ``
+you can open bookmark from cli.
 
 ![sample-demo](image/open.gif)
