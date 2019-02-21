@@ -28,7 +28,7 @@ brew install bm
 
 listing all book. `bm ls` also available.
 
-<img src="image/bm-ls.mov">
+<img src="image/ls.gif">
 ![sample-demo](image/ls.gif)
 By `bm ls ${searchWord}` , you can filtering bookmark by title.
 
