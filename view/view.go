@@ -6,26 +6,71 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"syscall"
+	"unsafe"
 
 	page "github.com/kcwebapply/bm/page"
 	"github.com/kcwebapply/bm/util"
 )
 
+var terminalWidth int
+
 var idPadding = 3
 var titlePadding = 35
-var urlPadding = 135
-var tagPadding = 165
+var urlPadding int
+var tagPadding int
+
+const ID_COLUMN_SIZE = 3
+const TITLE_COLUMN_SIZE = 30
+const TAG_COLUMN_SIZE = 30
+
+const ID_COLOR = "\x1b[1m\x1b[38;5;181mid\x1b[0m"
+const TITLE_COLOR = "\x1b[1m\x1b[38;5;112mtitle\x1b[0m"
+const URL_COLOR = "\x1b[1m\x1b[38;5;133murl\x1b[0m"
+const TAG_COLOR = "\x1b[1m\x1b[38;5;216mtag\x1b[0m"
+
+// this size is id-column size + title-columnt size + tagPadding.
+var minimumTerminalSize = 68
+
+func init() {
+	ws := &winsize{}
+	retCode, _, errno := syscall.Syscall(syscall.SYS_IOCTL,
+		uintptr(syscall.Stdin),
+		uintptr(syscall.TIOCGWINSZ),
+		uintptr(unsafe.Pointer(ws)))
+
+	if int(retCode) == -1 {
+		panic(errno)
+	}
+
+	terminalWidth = int(ws.Col)
+
+	if terminalWidth > 165 {
+		urlPadding = titlePadding + 100
+	} else {
+		urlPadding = terminalWidth - TAG_COLUMN_SIZE
+	}
+	tagPadding = urlPadding + TAG_COLUMN_SIZE
+}
 
 func printHeader() {
-	echo := ""
-	echo += "|\x1b[1m\x1b[38;5;181mid\x1b[0m"
-	echo = spacePadding(echo, "id", idPadding+19)
-	echo += "|\x1b[1m\x1b[38;5;112mtitle\x1b[0m"
-	echo = spacePadding(echo, "title", titlePadding+38)
-	echo += "|\x1b[1m\x1b[38;5;133murl\x1b[0m"
-	echo = spacePadding(echo, "", urlPadding+57)
-	echo += "|\x1b[1m\x1b[38;5;216mtag\x1b[0m"
-	echo = spacePadding(echo, "", tagPadding+74)
+	NON_PRINTED_CHARACTER_SIZE := 0
+	echo := "|"
+	echo += ID_COLOR
+	NON_PRINTED_CHARACTER_SIZE += 19
+	echo = spacePadding(echo, "id", idPadding+NON_PRINTED_CHARACTER_SIZE)
+	echo += "|"
+	echo += TITLE_COLOR
+	NON_PRINTED_CHARACTER_SIZE += 19
+	echo = spacePadding(echo, "title", titlePadding+NON_PRINTED_CHARACTER_SIZE)
+	echo += "|"
+	echo += URL_COLOR
+	NON_PRINTED_CHARACTER_SIZE += 19
+	echo = spacePadding(echo, "", urlPadding+NON_PRINTED_CHARACTER_SIZE)
+	echo += "|"
+	echo += TAG_COLOR
+	NON_PRINTED_CHARACTER_SIZE += 17
+	echo = spacePadding(echo, "", tagPadding+NON_PRINTED_CHARACTER_SIZE)
 	echo += "|"
 	line := strings.Repeat("-", len(echo)-76)
 	fmt.Println(line)
@@ -120,10 +165,18 @@ func tagView(tags []string) string {
 }
 
 func shortUrl(url string) string {
-	if len(url) >= 100 {
-		shortURL := url[0:95]
+	var urlReductedSize = urlPadding - titlePadding
+	if len(url) >= urlReductedSize {
+		shortURL := url[0 : urlReductedSize-5]
 		shortURL += "..."
 		return shortURL
 	}
 	return url
+}
+
+type winsize struct {
+	Row    uint16
+	Col    uint16
+	Xpixel uint16
+	Ypixel uint16
 }
