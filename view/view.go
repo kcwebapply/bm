@@ -10,27 +10,29 @@ import (
 	"unsafe"
 
 	page "github.com/kcwebapply/bm/page"
-	"github.com/kcwebapply/bm/util"
+	util "github.com/kcwebapply/bm/util"
 )
 
-var terminalWidth int
+var (
+	terminalWidth       int
+	idPadding           = 3
+	titlePadding        = 35
+	urlPadding          int
+	tagPadding          int
+	minimumTerminalSize = 68
+)
 
-var idPadding = 3
-var titlePadding = 35
-var urlPadding int
-var tagPadding int
-
-const ID_COLUMN_SIZE = 3
-const TITLE_COLUMN_SIZE = 30
-const TAG_COLUMN_SIZE = 30
-
-const ID_COLOR = "\x1b[1m\x1b[38;5;181mid\x1b[0m"
-const TITLE_COLOR = "\x1b[1m\x1b[38;5;112mtitle\x1b[0m"
-const URL_COLOR = "\x1b[1m\x1b[38;5;133murl\x1b[0m"
-const TAG_COLOR = "\x1b[1m\x1b[38;5;216mtag\x1b[0m"
+const (
+	idColumnSize    = 3
+	titleColumnSize = 30
+	tagColumnSize   = 30
+	idColor         = "\x1b[1m\x1b[38;5;181mid\x1b[0m"
+	titleColor      = "\x1b[1m\x1b[38;5;112mtitle\x1b[0m"
+	urlColor        = "\x1b[1m\x1b[38;5;133murl\x1b[0m"
+	tagColor        = "\x1b[1m\x1b[38;5;216mtag\x1b[0m"
+)
 
 // this size is id-column size + title-columnt size + tagPadding.
-var minimumTerminalSize = 68
 
 func init() {
 	ws := &winsize{}
@@ -48,29 +50,29 @@ func init() {
 	if terminalWidth > 165 {
 		urlPadding = titlePadding + 100
 	} else {
-		urlPadding = terminalWidth - TAG_COLUMN_SIZE
+		urlPadding = terminalWidth - tagColumnSize
 	}
-	tagPadding = urlPadding + TAG_COLUMN_SIZE
+	tagPadding = urlPadding + tagColumnSize
 }
 
 func printHeader() {
-	NON_PRINTED_CHARACTER_SIZE := 0
+	nonPrintedCaracterSize := 0
 	echo := "|"
-	echo += ID_COLOR
-	NON_PRINTED_CHARACTER_SIZE += 19
-	echo = spacePadding(echo, "id", idPadding+NON_PRINTED_CHARACTER_SIZE)
+	echo += idColor
+	nonPrintedCaracterSize += 19
+	echo = spacePadding(echo, "id", idPadding+nonPrintedCaracterSize)
 	echo += "|"
-	echo += TITLE_COLOR
-	NON_PRINTED_CHARACTER_SIZE += 19
-	echo = spacePadding(echo, "title", titlePadding+NON_PRINTED_CHARACTER_SIZE)
+	echo += titleColor
+	nonPrintedCaracterSize += 19
+	echo = spacePadding(echo, "title", titlePadding+nonPrintedCaracterSize)
 	echo += "|"
-	echo += URL_COLOR
-	NON_PRINTED_CHARACTER_SIZE += 19
-	echo = spacePadding(echo, "", urlPadding+NON_PRINTED_CHARACTER_SIZE)
+	echo += urlColor
+	nonPrintedCaracterSize += 19
+	echo = spacePadding(echo, "", urlPadding+nonPrintedCaracterSize)
 	echo += "|"
-	echo += TAG_COLOR
-	NON_PRINTED_CHARACTER_SIZE += 17
-	echo = spacePadding(echo, "", tagPadding+NON_PRINTED_CHARACTER_SIZE)
+	echo += tagColor
+	nonPrintedCaracterSize += 17
+	echo = spacePadding(echo, "", tagPadding+nonPrintedCaracterSize)
 	echo += "|"
 	line := strings.Repeat("-", len(echo)-76)
 	fmt.Println(line)
@@ -100,6 +102,7 @@ func PrintDeletePage(data page.Page) {
 	fmt.Println("\x1b[1m\x1b[38;5;39mbookmark deleted!\x1b[0m")
 }
 
+// PrintTags printing Tags
 func PrintTags(tagCounter map[string]int) {
 	tags := make([]string, 0, len(tagCounter))
 	for tag := range tagCounter {
@@ -109,7 +112,7 @@ func PrintTags(tagCounter map[string]int) {
 	var echo = ""
 	var index = 0
 	for _, tag := range tags {
-		index += 1
+		index++
 		echo += fmt.Sprintf("%s:(%d), ", tag, tagCounter[tag])
 		if index%5 == 0 {
 			echo += "\n"
@@ -119,11 +122,11 @@ func PrintTags(tagCounter map[string]int) {
 }
 
 func printPage(data page.Page) {
-	idString := strconv.Itoa(data.Id)
+	idString := strconv.Itoa(data.ID)
 	echo := idString
-	if data.Id < 10 {
+	if data.ID < 10 {
 		echo += "  "
-	} else if data.Id < 100 {
+	} else if data.ID < 100 {
 		echo += " "
 	}
 
@@ -132,8 +135,8 @@ func printPage(data page.Page) {
 	echo += data.Title
 	echo = spacePadding(echo, data.Title, titlePadding)
 	echo += "|"
-	echo += shortUrl(data.URL)
-	echo = spacePadding(echo, shortUrl(data.URL), urlPadding)
+	echo += shortURL(data.URL)
+	echo = spacePadding(echo, shortURL(data.URL), urlPadding)
 	echo += "|"
 	tagString := tagView(data.Tags)
 	echo += tagString
@@ -147,16 +150,15 @@ func spacePadding(text string, content string, num int) string {
 	rep := regexp.MustCompile("^([a-zA-Z0-9])+$")
 
 	if rep.MatchString(content) {
-		space += 1
+		space++
 	}
 
 	if space < 0 {
 		sizingText := text[0:num]
 		return sizingText
-	} else {
-		spaces := strings.Repeat(" ", space)
-		return text + spaces
 	}
+	spaces := strings.Repeat(" ", space)
+	return text + spaces
 }
 
 func tagView(tags []string) string {
@@ -164,7 +166,7 @@ func tagView(tags []string) string {
 	return tagPrinter
 }
 
-func shortUrl(url string) string {
+func shortURL(url string) string {
 	var urlReductedSize = urlPadding - titlePadding
 	if len(url) >= urlReductedSize {
 		shortURL := url[0 : urlReductedSize-5]

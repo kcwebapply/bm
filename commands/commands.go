@@ -52,6 +52,7 @@ func GetAllPages(c *cli.Context) {
 	view.PrintAllPage(allPages)
 }
 
+// GetTags returns all tags on bookmarks
 func GetTags(c *cli.Context) {
 	allPages := readLines()
 	tagCounter := make(map[string]int)
@@ -64,7 +65,7 @@ func GetTags(c *cli.Context) {
 			if _, contain := tagCounter[tag]; !contain {
 				tagCounter[tag] = 1
 			} else {
-				tagCounter[tag] += 1
+				tagCounter[tag]++
 			}
 		}
 	}
@@ -108,6 +109,7 @@ func DeletePage(c *cli.Context) {
 	view.PrintSavePage(page)
 }
 
+// OpenPage open bookmark website
 func OpenPage(c *cli.Context) {
 	id := c.Args().Get(0)
 	if id == "" {
@@ -128,11 +130,11 @@ func savePage(url string, title string, tagList []string) page.Page {
 
 	var lastCOUNTER int
 	if pageSize > 0 {
-		lastCOUNTER = allPages[pageSize-1].Id + 1
+		lastCOUNTER = allPages[pageSize-1].ID + 1
 	} else {
 		lastCOUNTER = 1
 	}
-	newData := page.Page{Id: lastCOUNTER, URL: url, Title: title, Tags: tagList}
+	newData := page.Page{ID: lastCOUNTER, URL: url, Title: title, Tags: tagList}
 	writer.Write(([]byte)(newData.String()))
 	return newData
 }
@@ -145,7 +147,7 @@ func deletePage(id string) page.Page {
 	var deletePage page.Page
 
 	for _, page := range allPages {
-		if strconv.Itoa(page.Id) == id {
+		if strconv.Itoa(page.ID) == id {
 			deletePage = page
 			continue
 		}
@@ -158,7 +160,7 @@ func deletePage(id string) page.Page {
 func openPage(id string) {
 	pages := readLines()
 	for _, page := range pages {
-		if id == strconv.Itoa(page.Id) {
+		if id == strconv.Itoa(page.ID) {
 			open.Run(page.URL)
 		}
 	}
@@ -220,14 +222,14 @@ func sortAndDeleteDuplication(datas []page.Page) []page.Page {
 	idSets := make(map[int]struct{})
 
 	for _, data := range datas {
-		if _, ok := idSets[data.Id]; !ok {
-			idSets[data.Id] = struct{}{}
+		if _, ok := idSets[data.ID]; !ok {
+			idSets[data.ID] = struct{}{}
 			dataSets = append(dataSets, data)
 		}
 	}
 
 	sort.Slice(dataSets, func(i, j int) bool {
-		return dataSets[i].Id < dataSets[j].Id
+		return dataSets[i].ID < dataSets[j].ID
 	})
 	return dataSets
 }
