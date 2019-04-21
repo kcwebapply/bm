@@ -9,20 +9,24 @@ import (
 	"strings"
 
 	"github.com/codegangsta/cli"
+	http "github.com/kcwebapply/bm/http"
 	page "github.com/kcwebapply/bm/page"
+	provider "github.com/kcwebapply/bm/provider"
 	util "github.com/kcwebapply/bm/util"
 	view "github.com/kcwebapply/bm/view"
-	homedir "github.com/mitchellh/go-homedir"
 	open "github.com/skratchdot/open-golang/open"
 )
 
-var fileName = ""
+var (
+	fileName    = ""
+	maxTextSize = 60
 
-var maxTextSize = 60
+	contentPath = ""
+)
 
 func init() {
-	filePath, _ := homedir.Dir()
-	fileName = fmt.Sprintf("%s/%s", filePath, "bm.txt")
+	fileName = provider.FileName
+	contentPath = provider.ContentPath
 }
 
 func GetAllPages(c *cli.Context) {
@@ -92,9 +96,11 @@ func SavePage(c *cli.Context) {
 		os.Exit(0)
 	}
 
-	newData := savePage(url, title, tagList)
+	newPage := savePage(url, title, tagList)
+	// save http content to ${home}/${ID}.txt
+	saveHTTPContent(newPage.ID, newPage.URL)
 
-	view.PrintSavePage(newData)
+	view.PrintSavePage(newPage)
 }
 
 // DeletePage delete pagedata
@@ -121,27 +127,40 @@ func OpenPage(c *cli.Context) {
 
 func savePage(url string, title string, tagList []string) page.Page {
 	allPages := readLines()
-	writer := getFileCleanWriter()
-	defer writer.Flush()
+	fileWriter := getFileCleanWriter(fileName)
+	defer fileWriter.Flush()
 	pageSize := len(allPages)
 	for _, page := range allPages {
-		writer.Write(([]byte)(page.String()))
+		fileWriter.Write(([]byte)(page.String()))
 	}
 
-	var lastCOUNTER int
+	var newID int
 	if pageSize > 0 {
-		lastCOUNTER = allPages[pageSize-1].ID + 1
+		newID = allPages[pageSize-1].ID + 1
 	} else {
-		lastCOUNTER = 1
+		newID = 1
 	}
-	newData := page.Page{ID: lastCOUNTER, URL: url, Title: title, Tags: tagList}
-	writer.Write(([]byte)(newData.String()))
-	return newData
+
+	newPage := page.Page{ID: newID, URL: url, Title: title, Tags: tagList}
+	fileWriter.Write(([]byte)(newPage.String()))
+	return newPage
+}
+
+func saveHTTPContent(id int, url string) {
+	// get page content from www.
+	content, err := http.GetContent(url)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(0)
+	}
+	contentFileName := contentPath + "/" + strconv.Itoa(id) + ".txt"
+	writer := getFileCleanWriter(contentFileName)
+	writer.Write(([]byte)(*content))
 }
 
 func deletePage(id string) page.Page {
 	allPages := readLines()
-	writer := getFileCleanWriter()
+	writer := getFileCleanWriter(fileName)
 	defer writer.Flush()
 
 	var deletePage page.Page
@@ -208,7 +227,7 @@ func readLinesBySearch(word string) []page.Page {
 	return lines
 }
 
-func getFileCleanWriter() *bufio.Writer {
+func getFileCleanWriter(fileName string) *bufio.Writer {
 	writeFile, err := os.OpenFile(fileName, os.O_TRUNC|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		fmt.Println(err)
