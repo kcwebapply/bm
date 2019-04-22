@@ -23,9 +23,9 @@ func InitApp() *cli.App {
 		},
 
 		cli.StringFlag{
-			Name:  "w,word",
+			Name:  "s,search",
 			Value: "",
-			Usage: "word search parameter",
+			Usage: "content search parameter (receive word argument)",
 		},
 	}
 
@@ -57,8 +57,8 @@ func InitApp() *cli.App {
 			Action:  commands.GetTags,
 		},
 		{
-			Name:    "delete",
-			Aliases: []string{"d"},
+			Name:    "rm",
+			Aliases: []string{"r"},
 			Usage:   "delete bookmark ",
 			Action:  commands.DeletePage,
 		},

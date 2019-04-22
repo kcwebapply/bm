@@ -7,7 +7,6 @@ import (
 
 	"github.com/codegangsta/cli"
 	page "github.com/kcwebapply/bm/page"
-	provider "github.com/kcwebapply/bm/provider"
 	view "github.com/kcwebapply/bm/view"
 )
 
@@ -48,7 +47,7 @@ func searchPageContent(word string, allPages []page.Page) []page.Page {
 	var results = []page.Page{}
 	for _, page := range allPages {
 		ID := page.ID
-		pageContentFile := provider.ContentPath + "/" + strconv.Itoa(ID) + ".txt"
+		pageContentFile := contentPath + "/" + strconv.Itoa(ID) + ".txt"
 		command := fmt.Sprintf("cat %s | grep %s", pageContentFile, word)
 		_, err := exec.Command("sh", "-c", command).Output()
 		if err != nil {

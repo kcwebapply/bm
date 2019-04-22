@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 
@@ -34,6 +35,10 @@ func deletePage(id string) page.Page {
 			continue
 		}
 		writer.Write(([]byte)(page.String()))
+	}
+
+	if err := os.Remove(contentPath + "/" + id + ".txt"); err != nil {
+		fmt.Println(err)
 	}
 
 	return deletePage
