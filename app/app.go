@@ -15,11 +15,17 @@ func InitApp() *cli.App {
 	app.Usage = "github.com/kcwebapply/bm"
 	app.Version = version
 
-	searchFlag := []cli.Flag{
+	lsFlag := []cli.Flag{
 		cli.StringFlag{
 			Name:  "t,tag",
 			Value: "",
 			Usage: "search tag",
+		},
+
+		cli.StringFlag{
+			Name:  "w,word",
+			Value: "",
+			Usage: "word search parameter",
 		},
 	}
 
@@ -42,7 +48,7 @@ func InitApp() *cli.App {
 			Aliases: []string{"l", "ls"},
 			Usage:   "view bookmark list.",
 			Action:  commands.GetAllPages,
-			Flags:   searchFlag,
+			Flags:   lsFlag,
 		},
 		{
 			Name:    "tags",

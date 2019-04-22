@@ -4,8 +4,11 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/PuerkitoBio/goquery"
+
+	strip "github.com/grokify/html-strip-tags-go"
 )
 
 // GetContent get content from internet.
@@ -18,7 +21,7 @@ func GetContent(u string) (*string, error) {
 
 	resp, httpGetError := http.Get(baseURL.String())
 	if httpGetError != nil {
-		err := errors.New("http get request error!")
+		err := errors.New("http get request error")
 		return nil, err
 	}
 
@@ -29,5 +32,13 @@ func GetContent(u string) (*string, error) {
 		return nil, err
 	}
 
-	return &html, nil
+	//return &html, nil
+	content := removeHTMLTag(html)
+	return &content, nil
+}
+
+func removeHTMLTag(str string) string {
+	src := strip.StripTags(str)
+	src = strings.TrimSpace(src)
+	return src
 }
