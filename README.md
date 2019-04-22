@@ -6,7 +6,7 @@
 [](https://github.com/gin-gonic/gin/releases)
 [![Release](https://img.shields.io/github/release/kcwebapply/imemo.svg?style=flat-square)](https://github.com/kcwebapply/iemo/release)
 
-`bm` is tag-based cli tool for bookmarking.
+`bm` is html-contents search cli tool for bookmarking.
 
 <img src="image/bm-sample.png" width="1000px"/>
 
@@ -31,9 +31,12 @@ listing all book. `bm ls` also available.
 <img src="image/ls.gif">
 
 
+By `bm ls -s ${word}`, you can search in bookmark's html contents (stored when you save bookmark `html-contents`.)
 
 By `bm ls ${searchWord}` , you can filtering bookmark by title.
-By `bm -t ${tagName}` , you can search bookmark by tag name.
+
+By `bm ls -t ${tagName}` , you can search bookmark by tag name.
+
 
 ![sample-demo](image/tag.gif)
 
