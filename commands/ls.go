@@ -34,9 +34,8 @@ func GetAllPages(c *cli.Context) {
 		allPages = searchPages
 	}
 
-	if c.String("w") != "" {
-		word := c.String("w")
-		fmt.Println("word:", word)
+	if c.String("s") != "" {
+		word := c.String("s")
 		allPages = searchPageContent(word, allPages)
 	}
 
