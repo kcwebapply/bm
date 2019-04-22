@@ -6,7 +6,9 @@
 [](https://github.com/gin-gonic/gin/releases)
 [![Release](https://img.shields.io/github/release/kcwebapply/imemo.svg?style=flat-square)](https://github.com/kcwebapply/iemo/release)
 
-`bm` is html-contents search cli tool for bookmarking.
+you can bookmark webpage and search by `title`, `tag`, `html-body`.
+
+
 
 <img src="image/bm-sample.png" width="1000px"/>
 
