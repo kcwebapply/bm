@@ -18,7 +18,7 @@ func OpenPage(c *cli.Context) {
 }
 
 func openPage(id string) {
-	pages := readLines()
+	pages := readPages()
 	for _, page := range pages {
 		if id == strconv.Itoa(page.ID) {
 			open.Run(page.URL)

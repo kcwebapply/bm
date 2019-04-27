@@ -88,15 +88,15 @@ func PrintAllPage(datas []page.Page) {
 	}
 }
 
-// PrintSavePage is function of printing message when saving page.
-func PrintSavePage(data page.Page) {
+// PrintAdd is function of printing message when saving page.
+func PrintAdd(data page.Page) {
 	printHeader()
 	printPage(data)
 	fmt.Println("\x1b[1m\x1b[38;5;39mbookmark completed!\x1b[0m")
 }
 
-// PrintDeletePage is function of printing message when deleting page.
-func PrintDeletePage(data page.Page) {
+// PrintRm is function of printing message when deleting page.
+func PrintRm(data page.Page) {
 	printHeader()
 	printPage(data)
 	fmt.Println("\x1b[1m\x1b[38;5;39mbookmark deleted!\x1b[0m")

@@ -15,9 +15,9 @@ func GetAllPages(c *cli.Context) {
 	allPages := []page.Page{}
 
 	if search != "" {
-		allPages = readLinesBySearch(search)
+		allPages = readPagesByTitleWordGrep(search)
 	} else {
-		allPages = readLines()
+		allPages = readPages()
 	}
 
 	if c.String("t") != "" {

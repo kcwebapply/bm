@@ -13,8 +13,8 @@ import (
 	view "github.com/kcwebapply/bm/view"
 )
 
-// SavePage saves pagedata
-func SavePage(c *cli.Context) {
+// Add saves pagedata
+func Add(c *cli.Context) {
 
 	url := c.Args().Get(0)
 	fmt.Println("url:", url)
@@ -32,15 +32,15 @@ func SavePage(c *cli.Context) {
 		os.Exit(0)
 	}
 
-	newPage := savePage(url, title, tagList)
+	newPage := add(url, title, tagList)
 	// save http content to ${home}/${ID}.txt
 	saveHTTPContent(newPage.ID, newPage.URL)
 
-	view.PrintSavePage(newPage)
+	view.PrintRm(newPage)
 }
 
-func savePage(url string, title string, tagList []string) page.Page {
-	allPages := readLines()
+func add(url string, title string, tagList []string) page.Page {
+	allPages := readPages()
 	fileWriter := getFileCleanWriter(fileName)
 	defer fileWriter.Flush()
 	pageSize := len(allPages)

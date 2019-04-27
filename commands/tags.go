@@ -7,7 +7,7 @@ import (
 
 // GetTags returns all tags on bookmarks
 func GetTags(c *cli.Context) {
-	allPages := readLines()
+	allPages := readPages()
 	tagCounter := make(map[string]int)
 	for _, page := range allPages {
 		//if _, ok := idSets[data.Id]; !ok {

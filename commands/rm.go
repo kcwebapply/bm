@@ -10,8 +10,8 @@ import (
 	view "github.com/kcwebapply/bm/view"
 )
 
-// DeletePage delete pagedata
-func DeletePage(c *cli.Context) {
+// Rm delete pagedata
+func Rm(c *cli.Context) {
 
 	id := c.Args().Get(0)
 	if id == "" {
@@ -19,11 +19,11 @@ func DeletePage(c *cli.Context) {
 	}
 	page := deletePage(id)
 
-	view.PrintSavePage(page)
+	view.PrintRm(page)
 }
 
 func deletePage(id string) page.Page {
-	allPages := readLines()
+	allPages := readPages()
 	writer := getFileCleanWriter(fileName)
 	defer writer.Flush()
 

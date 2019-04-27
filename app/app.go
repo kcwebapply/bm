@@ -35,7 +35,7 @@ func InitApp() *cli.App {
 			Name:    "add",
 			Aliases: []string{"a"},
 			Usage:   "register web page on bm.",
-			Action:  commands.SavePage,
+			Action:  commands.Add,
 		},
 		{
 			Name:    "open",
@@ -60,7 +60,7 @@ func InitApp() *cli.App {
 			Name:    "rm",
 			Aliases: []string{"r"},
 			Usage:   "delete bookmark ",
-			Action:  commands.DeletePage,
+			Action:  commands.Rm,
 		},
 	}
 
