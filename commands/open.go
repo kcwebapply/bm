@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/codegangsta/cli"
+	repository "github.com/kcwebapply/bm/repository"
 	"github.com/skratchdot/open-golang/open"
 )
 
@@ -18,7 +19,7 @@ func OpenPage(c *cli.Context) {
 }
 
 func openPage(id string) {
-	pages := readPages()
+	pages := repository.GetPages()
 	for _, page := range pages {
 		if id == strconv.Itoa(page.ID) {
 			open.Run(page.URL)

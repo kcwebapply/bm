@@ -1,23 +1,20 @@
 package commands
 
 import (
-	"fmt"
-	"os/exec"
-	"strconv"
-
 	"github.com/codegangsta/cli"
 	page "github.com/kcwebapply/bm/page"
+	repository "github.com/kcwebapply/bm/repository"
 	view "github.com/kcwebapply/bm/view"
 )
 
-func GetAllPages(c *cli.Context) {
+func Ls(c *cli.Context) {
 	search := c.Args().Get(0)
 	allPages := []page.Page{}
 
 	if search != "" {
-		allPages = readPagesByTitleWordGrep(search)
+		allPages = repository.GetPagesByTitleWordGrep(search)
 	} else {
-		allPages = readPages()
+		allPages = repository.GetPages()
 	}
 
 	if c.String("t") != "" {
@@ -44,7 +41,7 @@ func GetAllPages(c *cli.Context) {
 
 func searchPageContent(word string, allPages []page.Page) []page.Page {
 	var results = []page.Page{}
-	for _, page := range allPages {
+	/*for _, page := range allPages {
 		ID := page.ID
 		pageContentFile := contentPath + "/" + strconv.Itoa(ID) + ".txt"
 		command := fmt.Sprintf("cat %s | grep %s", pageContentFile, word)
@@ -53,6 +50,6 @@ func searchPageContent(word string, allPages []page.Page) []page.Page {
 			continue
 		}
 		results = append(results, page)
-	}
+	}*/
 	return results
 }

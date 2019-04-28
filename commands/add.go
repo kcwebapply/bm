@@ -3,12 +3,11 @@ package commands
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/codegangsta/cli"
-	"github.com/kcwebapply/bm/http"
 	"github.com/kcwebapply/bm/page"
+	repository "github.com/kcwebapply/bm/repository"
 	util "github.com/kcwebapply/bm/util"
 	view "github.com/kcwebapply/bm/view"
 )
@@ -17,7 +16,6 @@ import (
 func Add(c *cli.Context) {
 
 	url := c.Args().Get(0)
-	fmt.Println("url:", url)
 	tagList := []string{}
 
 	title, _ := util.GetTerminalInput("title")
@@ -40,35 +38,27 @@ func Add(c *cli.Context) {
 }
 
 func add(url string, title string, tagList []string) page.Page {
-	allPages := readPages()
-	fileWriter := getFileCleanWriter(fileName)
-	defer fileWriter.Flush()
+	allPages := repository.GetPages()
 	pageSize := len(allPages)
-	for _, page := range allPages {
-		fileWriter.Write(([]byte)(page.String()))
-	}
-
-	var newID int
+	var newID = 1
 	if pageSize > 0 {
 		newID = allPages[pageSize-1].ID + 1
-	} else {
-		newID = 1
 	}
 
 	newPage := page.Page{ID: newID, URL: url, Title: title, Tags: tagList}
-	fileWriter.Write(([]byte)(newPage.String()))
+	repository.AddPage(newPage)
 	return newPage
 }
 
 func saveHTTPContent(id int, url string) {
 	// get page content from www.
-	content, err := http.GetContent(url)
+	/*content, err := http.GetContent(url)
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(0)
-	}
-	contentFileName := contentPath + "/" + strconv.Itoa(id) + ".txt"
+	}*/
+	/*ontentFileName := contentPath + "/" + strconv.Itoa(id) + ".txt"
 	writer := getFileCleanWriter(contentFileName)
 	defer writer.Flush()
-	writer.Write(([]byte)(*content))
+	writer.Write(([]byte)(*content))*/
 }

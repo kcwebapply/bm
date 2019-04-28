@@ -2,12 +2,13 @@ package commands
 
 import (
 	"github.com/codegangsta/cli"
+	repository "github.com/kcwebapply/bm/repository"
 	"github.com/kcwebapply/bm/view"
 )
 
 // GetTags returns all tags on bookmarks
 func GetTags(c *cli.Context) {
-	allPages := readPages()
+	allPages := repository.GetPages()
 	tagCounter := make(map[string]int)
 	for _, page := range allPages {
 		//if _, ok := idSets[data.Id]; !ok {
@@ -23,5 +24,4 @@ func GetTags(c *cli.Context) {
 		}
 	}
 	view.PrintTags(tagCounter)
-
 }

@@ -3,10 +3,10 @@ package commands
 import (
 	"fmt"
 	"os"
-	"strconv"
 
 	"github.com/codegangsta/cli"
 	"github.com/kcwebapply/bm/page"
+	repository "github.com/kcwebapply/bm/repository"
 	view "github.com/kcwebapply/bm/view"
 )
 
@@ -17,29 +17,21 @@ func Rm(c *cli.Context) {
 	if id == "" {
 		os.Exit(0)
 	}
-	page := deletePage(id)
+	page := rm(id)
 
 	view.PrintRm(page)
 }
 
-func deletePage(id string) page.Page {
-	allPages := readPages()
-	writer := getFileCleanWriter(fileName)
-	defer writer.Flush()
-
-	var deletePage page.Page
-
-	for _, page := range allPages {
-		if strconv.Itoa(page.ID) == id {
-			deletePage = page
-			continue
-		}
-		writer.Write(([]byte)(page.String()))
-	}
-
-	if err := os.Remove(contentPath + "/" + id + ".txt"); err != nil {
+func rm(id string) page.Page {
+	deletePage, err := repository.RemovePage(id)
+	if err != nil {
 		fmt.Println(err)
+		os.Exit(0)
 	}
+
+	/*if err := os.Remove(contentPath + "/" + id + ".txt"); err != nil {
+		fmt.Println(err)
+	}*/
 
 	return deletePage
 }
