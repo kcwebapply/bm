@@ -138,7 +138,7 @@ func printPage(data model.Page) {
 	echo += shortURL(data.URL)
 	echo = spacePadding(echo, shortURL(data.URL), urlPadding)
 	echo += "|"
-	tagString := tagView(data.Tags)
+	tagString := data.Tags
 	echo += tagString
 	echo = spacePadding(echo, tagString, tagPadding)
 	fmt.Println(echo)
@@ -159,11 +159,6 @@ func spacePadding(text string, content string, num int) string {
 	}
 	spaces := strings.Repeat(" ", space)
 	return text + spaces
-}
-
-func tagView(tags []string) string {
-	tagPrinter := strings.Join(tags, ",")
-	return tagPrinter
 }
 
 func shortURL(url string) string {

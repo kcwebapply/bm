@@ -4,86 +4,62 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strconv"
-	"strings"
 
+	"github.com/gocraft/dbr"
 	"github.com/kcwebapply/bm/domain/model"
+	"github.com/kcwebapply/bm/infrastructure/db"
 )
 
+var conn *dbr.Connection
+var sess *dbr.Session
+
+func init() {
+	conn = db.GetConnection()
+	sess = conn.NewSession(nil)
+	CreatePageTable()
+}
+
+//CreatePageTable create page table on sqlite3 db
+func CreatePageTable() {
+	_, _ = sess.Exec("create table page(id INTEGER PRIMARY KEY, url TEXT, title TEXT,tags TEXT,content TEXT);")
+}
+
 //GetPages returns all page entities user saved.
-func GetPages() []model.Page {
-	var lines = []model.Page{}
-
-	f, _ := os.Open(fileName)
-	defer f.Close()
-
-	scanner := bufio.NewScanner(f)
-
-	for scanner.Scan() {
-		data, err := model.ConvertToPage(scanner.Text())
-		if err != nil {
-			continue
-		}
-		lines = append(lines, data)
+func GetPages() ([]model.Page, error) {
+	var rows []model.Page
+	_, err := sess.Select("*").From("page").Load(&rows)
+	if err != nil {
+		fmt.Println("err:", err)
 	}
-	lines = sortAndDeleteDuplication(lines)
-	return lines
+	return rows, err
 }
 
 // GetPagesByTitleWordGrep retunrs page grepped title by input word.
-func GetPagesByTitleWordGrep(word string) []model.Page {
-	var lines = []model.Page{}
-
-	f, _ := os.Open(fileName)
-	defer f.Close()
-
-	scanner := bufio.NewScanner(f)
-
-	for scanner.Scan() {
-		data, err := model.ConvertToPage(scanner.Text())
-
-		if !strings.Contains(data.Title, word) {
-			continue
-		}
-		if err != nil {
-			continue
-		}
-		lines = append(lines, data)
+func GetPagesByTitleWordGrep(word string) ([]model.Page, error) {
+	var rows []model.Page
+	_, err := sess.Select("*").From("page").Where("title like ?", word).Load(&rows)
+	if err != nil {
+		fmt.Println("err:", err)
 	}
-	lines = sortAndDeleteDuplication(lines)
-	return lines
+	return rows, err
 }
 
 // AddPage saved bookrmark user input.
 func AddPage(newPage model.Page) error {
-	allPages := GetPages()
-	fileWriter := getFileCleanWriter()
-	defer fileWriter.Flush()
-	for _, page := range allPages {
-		fileWriter.Write(([]byte)(page.String()))
+	_, err := sess.InsertInto("page").Columns("id", "url", "title", "tags", "content").Record(newPage).Exec()
+	if err != nil {
+		fmt.Println("err:", err)
 	}
-
-	fileWriter.Write(([]byte)(newPage.String()))
-	return nil
+	return err
 }
 
 // RemovePage remove bookmark
-func RemovePage(id string) (model.Page, error) {
-	allPages := GetPages()
-	writer := getFileCleanWriter()
-	defer writer.Flush()
-
-	var deletePage model.Page
-
-	for _, page := range allPages {
-		if strconv.Itoa(page.ID) == id {
-			deletePage = page
-			continue
-		}
-		writer.Write(([]byte)(page.String()))
+func RemovePage(id string) error {
+	if _, err := sess.DeleteFrom("page").Where("id = ?", id).Exec(); err != nil {
+		fmt.Println("err:", err)
+		return err
 	}
-
-	return deletePage, nil
+	return nil
 }
 
 func getFileCleanWriter() *bufio.Writer {

@@ -1,27 +1,31 @@
 package commands
 
 import (
+	"strings"
+
 	"github.com/codegangsta/cli"
 	"github.com/kcwebapply/bm/domain/model"
 	"github.com/kcwebapply/bm/domain/repository"
 	"github.com/kcwebapply/bm/view"
 )
 
+// Ls returns bookmark list
 func Ls(c *cli.Context) {
 	search := c.Args().Get(0)
 	allPages := []model.Page{}
 
 	if search != "" {
-		allPages = repository.GetPagesByTitleWordGrep(search)
+		allPages, _ = repository.GetPagesByTitleWordGrep(search)
 	} else {
-		allPages = repository.GetPages()
+		allPages, _ = repository.GetPages()
 	}
 
 	if c.String("t") != "" {
 		searchPages := []model.Page{}
 		searchTag := c.String("t")
 		for _, page := range allPages {
-			for _, tag := range page.Tags {
+			tags := strings.Split(page.Tags, ",")
+			for _, tag := range tags {
 				if searchTag == tag {
 					searchPages = append(searchPages, page)
 					break

@@ -23,15 +23,12 @@ func Rm(c *cli.Context) {
 }
 
 func rm(id string) model.Page {
-	deletePage, err := repository.RemovePage(id)
+	err := repository.RemovePage(id)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(0)
 	}
 
-	/*if err := os.Remove(contentPath + "/" + id + ".txt"); err != nil {
-		fmt.Println(err)
-	}*/
-
-	return deletePage
+	// temp
+	return model.Page{}
 }

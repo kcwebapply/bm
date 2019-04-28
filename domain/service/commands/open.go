@@ -19,7 +19,7 @@ func OpenPage(c *cli.Context) {
 }
 
 func openPage(id string) {
-	pages := repository.GetPages()
+	pages, _ := repository.GetPages()
 	for _, page := range pages {
 		if id == strconv.Itoa(page.ID) {
 			open.Run(page.URL)
