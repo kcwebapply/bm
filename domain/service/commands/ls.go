@@ -2,14 +2,14 @@ package commands
 
 import (
 	"github.com/codegangsta/cli"
-	page "github.com/kcwebapply/bm/page"
-	repository "github.com/kcwebapply/bm/repository"
-	view "github.com/kcwebapply/bm/view"
+	"github.com/kcwebapply/bm/domain/model"
+	"github.com/kcwebapply/bm/domain/repository"
+	"github.com/kcwebapply/bm/view"
 )
 
 func Ls(c *cli.Context) {
 	search := c.Args().Get(0)
-	allPages := []page.Page{}
+	allPages := []model.Page{}
 
 	if search != "" {
 		allPages = repository.GetPagesByTitleWordGrep(search)
@@ -18,7 +18,7 @@ func Ls(c *cli.Context) {
 	}
 
 	if c.String("t") != "" {
-		searchPages := []page.Page{}
+		searchPages := []model.Page{}
 		searchTag := c.String("t")
 		for _, page := range allPages {
 			for _, tag := range page.Tags {
@@ -39,8 +39,8 @@ func Ls(c *cli.Context) {
 	view.PrintAllPage(allPages)
 }
 
-func searchPageContent(word string, allPages []page.Page) []page.Page {
-	var results = []page.Page{}
+func searchPageContent(word string, allPages []model.Page) []model.Page {
+	var results = []model.Page{}
 	/*for _, page := range allPages {
 		ID := page.ID
 		pageContentFile := contentPath + "/" + strconv.Itoa(ID) + ".txt"

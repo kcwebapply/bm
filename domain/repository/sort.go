@@ -3,11 +3,11 @@ package repository
 import (
 	"sort"
 
-	"github.com/kcwebapply/bm/page"
+	"github.com/kcwebapply/bm/domain/model"
 )
 
-func sortAndDeleteDuplication(datas []page.Page) []page.Page {
-	dataSets := []page.Page{}
+func sortAndDeleteDuplication(datas []model.Page) []model.Page {
+	dataSets := []model.Page{}
 	idSets := make(map[int]struct{})
 
 	for _, data := range datas {

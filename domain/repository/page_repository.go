@@ -7,12 +7,12 @@ import (
 	"strconv"
 	"strings"
 
-	page "github.com/kcwebapply/bm/page"
+	"github.com/kcwebapply/bm/domain/model"
 )
 
 //GetPages returns all page entities user saved.
-func GetPages() []page.Page {
-	var lines = []page.Page{}
+func GetPages() []model.Page {
+	var lines = []model.Page{}
 
 	f, _ := os.Open(fileName)
 	defer f.Close()
@@ -20,7 +20,7 @@ func GetPages() []page.Page {
 	scanner := bufio.NewScanner(f)
 
 	for scanner.Scan() {
-		data, err := page.ConvertToPage(scanner.Text())
+		data, err := model.ConvertToPage(scanner.Text())
 		if err != nil {
 			continue
 		}
@@ -31,8 +31,8 @@ func GetPages() []page.Page {
 }
 
 // GetPagesByTitleWordGrep retunrs page grepped title by input word.
-func GetPagesByTitleWordGrep(word string) []page.Page {
-	var lines = []page.Page{}
+func GetPagesByTitleWordGrep(word string) []model.Page {
+	var lines = []model.Page{}
 
 	f, _ := os.Open(fileName)
 	defer f.Close()
@@ -40,7 +40,7 @@ func GetPagesByTitleWordGrep(word string) []page.Page {
 	scanner := bufio.NewScanner(f)
 
 	for scanner.Scan() {
-		data, err := page.ConvertToPage(scanner.Text())
+		data, err := model.ConvertToPage(scanner.Text())
 
 		if !strings.Contains(data.Title, word) {
 			continue
@@ -55,7 +55,7 @@ func GetPagesByTitleWordGrep(word string) []page.Page {
 }
 
 // AddPage saved bookrmark user input.
-func AddPage(newPage page.Page) error {
+func AddPage(newPage model.Page) error {
 	allPages := GetPages()
 	fileWriter := getFileCleanWriter()
 	defer fileWriter.Flush()
@@ -68,12 +68,12 @@ func AddPage(newPage page.Page) error {
 }
 
 // RemovePage remove bookmark
-func RemovePage(id string) (page.Page, error) {
+func RemovePage(id string) (model.Page, error) {
 	allPages := GetPages()
 	writer := getFileCleanWriter()
 	defer writer.Flush()
 
-	var deletePage page.Page
+	var deletePage model.Page
 
 	for _, page := range allPages {
 		if strconv.Itoa(page.ID) == id {

@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/codegangsta/cli"
-	repository "github.com/kcwebapply/bm/repository"
+	"github.com/kcwebapply/bm/domain/repository"
 	"github.com/skratchdot/open-golang/open"
 )
 

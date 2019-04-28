@@ -5,9 +5,9 @@ import (
 	"os"
 
 	"github.com/codegangsta/cli"
-	"github.com/kcwebapply/bm/page"
-	repository "github.com/kcwebapply/bm/repository"
-	view "github.com/kcwebapply/bm/view"
+	"github.com/kcwebapply/bm/domain/model"
+	"github.com/kcwebapply/bm/domain/repository"
+	"github.com/kcwebapply/bm/view"
 )
 
 // Rm delete pagedata
@@ -22,7 +22,7 @@ func Rm(c *cli.Context) {
 	view.PrintRm(page)
 }
 
-func rm(id string) page.Page {
+func rm(id string) model.Page {
 	deletePage, err := repository.RemovePage(id)
 	if err != nil {
 		fmt.Println(err)

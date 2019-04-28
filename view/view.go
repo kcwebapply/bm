@@ -9,8 +9,8 @@ import (
 	"syscall"
 	"unsafe"
 
-	page "github.com/kcwebapply/bm/page"
-	util "github.com/kcwebapply/bm/util"
+	"github.com/kcwebapply/bm/domain/model"
+	"github.com/kcwebapply/bm/util"
 )
 
 var (
@@ -81,7 +81,7 @@ func printHeader() {
 }
 
 // PrintAllMemoPage is function of printing message when showing all page.
-func PrintAllPage(datas []page.Page) {
+func PrintAllPage(datas []model.Page) {
 	printHeader()
 	for _, data := range datas {
 		printPage(data)
@@ -89,14 +89,14 @@ func PrintAllPage(datas []page.Page) {
 }
 
 // PrintAdd is function of printing message when saving page.
-func PrintAdd(data page.Page) {
+func PrintAdd(data model.Page) {
 	printHeader()
 	printPage(data)
 	fmt.Println("\x1b[1m\x1b[38;5;39mbookmark completed!\x1b[0m")
 }
 
 // PrintRm is function of printing message when deleting page.
-func PrintRm(data page.Page) {
+func PrintRm(data model.Page) {
 	printHeader()
 	printPage(data)
 	fmt.Println("\x1b[1m\x1b[38;5;39mbookmark deleted!\x1b[0m")
@@ -121,7 +121,7 @@ func PrintTags(tagCounter map[string]int) {
 	fmt.Print(echo + "\n")
 }
 
-func printPage(data page.Page) {
+func printPage(data model.Page) {
 	idString := strconv.Itoa(data.ID)
 	echo := idString
 	if data.ID < 10 {

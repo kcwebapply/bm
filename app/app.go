@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/codegangsta/cli"
-	"github.com/kcwebapply/bm/commands"
+	commands "github.com/kcwebapply/bm/domain/service/commands"
 )
 
 var appName = "bm"

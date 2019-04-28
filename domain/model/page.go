@@ -1,4 +1,4 @@
-package page
+package model
 
 import (
 	"errors"

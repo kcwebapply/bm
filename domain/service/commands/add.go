@@ -6,10 +6,10 @@ import (
 	"strings"
 
 	"github.com/codegangsta/cli"
-	"github.com/kcwebapply/bm/page"
-	repository "github.com/kcwebapply/bm/repository"
-	util "github.com/kcwebapply/bm/util"
-	view "github.com/kcwebapply/bm/view"
+	"github.com/kcwebapply/bm/domain/model"
+	"github.com/kcwebapply/bm/domain/repository"
+	"github.com/kcwebapply/bm/util"
+	"github.com/kcwebapply/bm/view"
 )
 
 // Add saves pagedata
@@ -37,7 +37,7 @@ func Add(c *cli.Context) {
 	view.PrintRm(newPage)
 }
 
-func add(url string, title string, tagList []string) page.Page {
+func add(url string, title string, tagList []string) model.Page {
 	allPages := repository.GetPages()
 	pageSize := len(allPages)
 	var newID = 1
@@ -45,7 +45,7 @@ func add(url string, title string, tagList []string) page.Page {
 		newID = allPages[pageSize-1].ID + 1
 	}
 
-	newPage := page.Page{ID: newID, URL: url, Title: title, Tags: tagList}
+	newPage := model.Page{ID: newID, URL: url, Title: title, Tags: tagList}
 	repository.AddPage(newPage)
 	return newPage
 }

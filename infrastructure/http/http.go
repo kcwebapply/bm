@@ -8,7 +8,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 
-	strip "github.com/grokify/html-strip-tags-go"
+	"github.com/grokify/html-strip-tags-go"
 )
 
 // GetContent get content from internet.
