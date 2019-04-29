@@ -9,8 +9,8 @@ import (
 	"syscall"
 	"unsafe"
 
-	page "github.com/kcwebapply/bm/page"
-	util "github.com/kcwebapply/bm/util"
+	"github.com/kcwebapply/bm/domain/model"
+	"github.com/kcwebapply/bm/util"
 )
 
 var (
@@ -81,22 +81,22 @@ func printHeader() {
 }
 
 // PrintAllMemoPage is function of printing message when showing all page.
-func PrintAllPage(datas []page.Page) {
+func PrintAllPage(datas []model.Page) {
 	printHeader()
 	for _, data := range datas {
 		printPage(data)
 	}
 }
 
-// PrintSavePage is function of printing message when saving page.
-func PrintSavePage(data page.Page) {
+// PrintAdd is function of printing message when saving page.
+func PrintAdd(data model.Page) {
 	printHeader()
 	printPage(data)
 	fmt.Println("\x1b[1m\x1b[38;5;39mbookmark completed!\x1b[0m")
 }
 
-// PrintDeletePage is function of printing message when deleting page.
-func PrintDeletePage(data page.Page) {
+// PrintRm is function of printing message when deleting page.
+func PrintRm(data model.Page) {
 	printHeader()
 	printPage(data)
 	fmt.Println("\x1b[1m\x1b[38;5;39mbookmark deleted!\x1b[0m")
@@ -121,7 +121,7 @@ func PrintTags(tagCounter map[string]int) {
 	fmt.Print(echo + "\n")
 }
 
-func printPage(data page.Page) {
+func printPage(data model.Page) {
 	idString := strconv.Itoa(data.ID)
 	echo := idString
 	if data.ID < 10 {
@@ -138,7 +138,7 @@ func printPage(data page.Page) {
 	echo += shortURL(data.URL)
 	echo = spacePadding(echo, shortURL(data.URL), urlPadding)
 	echo += "|"
-	tagString := tagView(data.Tags)
+	tagString := data.Tags
 	echo += tagString
 	echo = spacePadding(echo, tagString, tagPadding)
 	fmt.Println(echo)
@@ -159,11 +159,6 @@ func spacePadding(text string, content string, num int) string {
 	}
 	spaces := strings.Repeat(" ", space)
 	return text + spaces
-}
-
-func tagView(tags []string) string {
-	tagPrinter := strings.Join(tags, ",")
-	return tagPrinter
 }
 
 func shortURL(url string) string {
