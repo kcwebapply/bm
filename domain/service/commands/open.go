@@ -6,23 +6,23 @@ import (
 
 	"github.com/codegangsta/cli"
 	"github.com/kcwebapply/bm/domain/repository"
-	"github.com/skratchdot/open-golang/open"
+	open_cmd "github.com/skratchdot/open-golang/open"
 )
 
-// OpenPage open bookmark website
-func OpenPage(c *cli.Context) {
+// Open open bookmark website
+func Open(c *cli.Context) {
 	id := c.Args().Get(0)
 	if id == "" {
 		os.Exit(0)
 	}
-	openPage(id)
+	open(id)
 }
 
-func openPage(id string) {
+func open(id string) {
 	pages, _ := repository.GetPages()
 	for _, page := range pages {
 		if id == strconv.Itoa(page.ID) {
-			open.Run(page.URL)
+			open_cmd.Run(page.URL)
 		}
 	}
 }

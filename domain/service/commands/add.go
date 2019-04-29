@@ -17,9 +17,6 @@ import (
 func Add(c *cli.Context) {
 
 	url := c.Args().Get(0)
-
-	title, _ := util.GetTerminalInput("title")
-
 	tags, _ := util.GetTerminalInput("tags (input few tags by ',')")
 
 	tagSize := len(strings.Split(tags, ","))
@@ -28,19 +25,18 @@ func Add(c *cli.Context) {
 		os.Exit(0)
 	}
 
-	content, err := http.GetContent(url)
-	if err != nil {
-		fmt.Println("error get http contents.")
-		os.Exit(0)
-	}
-
-	newPage := add(url, title, tags, *content)
+	newPage := add(url, tags)
 
 	view.PrintAdd(newPage)
 }
 
-func add(url string, title string, tags string, content string) model.Page {
-	newPage := model.Page{URL: url, Title: title, Tags: tags, Content: content}
+func add(url string, tags string) model.Page {
+	title, content, err := http.GetContent(url)
+	if err != nil {
+		fmt.Println("error get http contents.")
+		os.Exit(0)
+	}
+	newPage := model.Page{URL: url, Title: *title, Tags: tags, Content: *content}
 	repository.AddPage(newPage)
 	return newPage
 }

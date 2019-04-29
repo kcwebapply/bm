@@ -18,11 +18,11 @@ func Commands() []cli.Command {
 			Name:    "open",
 			Aliases: []string{"p"},
 			Usage:   "open url ",
-			Action:  OpenPage,
+			Action:  Open,
 		},
 		{
-			Name:    "list",
-			Aliases: []string{"l", "ls"},
+			Name:    "ls",
+			Aliases: []string{"l"},
 			Usage:   "view bookmark list.",
 			Action:  Ls,
 			Flags: []cli.Flag{
@@ -43,7 +43,7 @@ func Commands() []cli.Command {
 			Name:    "tags",
 			Aliases: []string{"t"},
 			Usage:   "tagList",
-			Action:  GetTags,
+			Action:  Tags,
 		},
 		{
 			Name:    "rm",

@@ -8,8 +8,8 @@ import (
 	"github.com/kcwebapply/bm/view"
 )
 
-// GetTags returns all tags on bookmarks
-func GetTags(c *cli.Context) {
+// Tags returns all tags on bookmarks
+func Tags(c *cli.Context) {
 	allPages, _ := repository.GetPages()
 	tagCounter := make(map[string]int)
 	for _, page := range allPages {

@@ -24,17 +24,6 @@ func ls(c *cli.Context) []model.Page {
 	}
 
 	if tagSearchParam != "" {
-		/*	searchPages := []model.Page{}
-			searchTag := tagSearchParam
-			for _, page := range allPages {
-				tags := strings.Split(page.Tags, ",")
-				for _, tag := range tags {
-					if searchTag == tag {
-						searchPages = append(searchPages, page)
-						break
-					}
-				}
-			}*/
 		results, _ := repository.GetPagesByTag(tagSearchParam)
 		return results
 	}

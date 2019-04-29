@@ -1,9 +1,7 @@
 package repository
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 
 	"github.com/gocraft/dbr"
 	"github.com/kcwebapply/bm/domain/model"
@@ -56,6 +54,7 @@ func GetPagesByTag(tag string) ([]model.Page, error) {
 	return rows, err
 }
 
+// GetPagesByContentSearch returns page entities grepped by html-content-search.
 func GetPagesByContentSearch(word string) ([]model.Page, error) {
 	var rows []model.Page
 	likeItem := fmt.Sprintf("%%%s%%", word)
@@ -82,13 +81,4 @@ func RemovePage(id string) error {
 		return err
 	}
 	return nil
-}
-
-func getFileCleanWriter() *bufio.Writer {
-	writeFile, err := os.OpenFile(fileName, os.O_TRUNC|os.O_WRONLY|os.O_CREATE, 0644)
-	if err != nil {
-		fmt.Println(err)
-	}
-	writer := bufio.NewWriter(writeFile)
-	return writer
 }
