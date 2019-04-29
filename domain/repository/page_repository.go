@@ -21,7 +21,7 @@ func init() {
 
 //CreatePageTable create page table on sqlite3 db
 func CreatePageTable() {
-	_, _ = sess.Exec("create table page(id INTEGER PRIMARY KEY, url TEXT, title TEXT,tags TEXT,content TEXT);")
+	_, _ = sess.Exec("create table page(id INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT, title TEXT,tags TEXT,content TEXT);")
 }
 
 //GetPages returns all page entities user saved.
@@ -37,16 +37,38 @@ func GetPages() ([]model.Page, error) {
 // GetPagesByTitleWordGrep retunrs page grepped title by input word.
 func GetPagesByTitleWordGrep(word string) ([]model.Page, error) {
 	var rows []model.Page
-	_, err := sess.Select("*").From("page").Where("title like ?", word).Load(&rows)
+	likeItem := fmt.Sprintf("%%%s%%", word)
+	_, err := sess.Select("*").From("page").Where("title like ?", likeItem).Load(&rows)
 	if err != nil {
-		fmt.Println("err:", err)
+		fmt.Println("sqlerr:", err)
+	}
+	return rows, err
+}
+
+//GetPagesByTag returns page entities grepped by input tag word.
+func GetPagesByTag(tag string) ([]model.Page, error) {
+	var rows []model.Page
+	likeItem := fmt.Sprintf("%%%s%%", tag)
+	_, err := sess.Select("*").From("page").Where("tags like ?", likeItem).Load(&rows)
+	if err != nil {
+		fmt.Println("sqlerr:", err)
+	}
+	return rows, err
+}
+
+func GetPagesByContentSearch(word string) ([]model.Page, error) {
+	var rows []model.Page
+	likeItem := fmt.Sprintf("%%%s%%", word)
+	_, err := sess.Select("*").From("page").Where("content like ?", likeItem).Load(&rows)
+	if err != nil {
+		fmt.Println("sqlerr:", err)
 	}
 	return rows, err
 }
 
 // AddPage saved bookrmark user input.
 func AddPage(newPage model.Page) error {
-	_, err := sess.InsertInto("page").Columns("id", "url", "title", "tags", "content").Record(newPage).Exec()
+	_, err := sess.InsertInto("page").Columns("url", "title", "tags", "content").Record(newPage).Exec()
 	if err != nil {
 		fmt.Println("err:", err)
 	}

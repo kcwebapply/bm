@@ -12,7 +12,6 @@ import (
 
 // Rm delete pagedata
 func Rm(c *cli.Context) {
-
 	id := c.Args().Get(0)
 	if id == "" {
 		os.Exit(0)

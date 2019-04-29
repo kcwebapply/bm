@@ -1,8 +1,6 @@
 package commands
 
 import (
-	"strings"
-
 	"github.com/codegangsta/cli"
 	"github.com/kcwebapply/bm/domain/model"
 	"github.com/kcwebapply/bm/domain/repository"
@@ -11,49 +9,43 @@ import (
 
 // Ls returns bookmark list
 func Ls(c *cli.Context) {
-	search := c.Args().Get(0)
-	allPages := []model.Page{}
-
-	if search != "" {
-		allPages, _ = repository.GetPagesByTitleWordGrep(search)
-	} else {
-		allPages, _ = repository.GetPages()
-	}
-
-	if c.String("t") != "" {
-		searchPages := []model.Page{}
-		searchTag := c.String("t")
-		for _, page := range allPages {
-			tags := strings.Split(page.Tags, ",")
-			for _, tag := range tags {
-				if searchTag == tag {
-					searchPages = append(searchPages, page)
-					break
-				}
-			}
-		}
-		allPages = searchPages
-	}
-
-	if c.String("s") != "" {
-		word := c.String("s")
-		allPages, _ = repository.GetPagesByTitleWordGrep(word)
-	}
-
-	view.PrintAllPage(allPages)
+	pages := ls(c)
+	view.PrintAllPage(pages)
 }
 
-func searchPageContent(word string, allPages []model.Page) []model.Page {
-	var results = []model.Page{}
-	/*for _, page := range allPages {
-		ID := page.ID
-		pageContentFile := contentPath + "/" + strconv.Itoa(ID) + ".txt"
-		command := fmt.Sprintf("cat %s | grep %s", pageContentFile, word)
-		_, err := exec.Command("sh", "-c", command).Output()
-		if err != nil {
-			continue
-		}
-		results = append(results, page)
-	}*/
-	return results
+func ls(c *cli.Context) []model.Page {
+	var searchTitleParam = c.Args().Get(0)
+	var tagSearchParam = c.String("t")
+	var contentSearchParam = c.String("s")
+
+	if searchTitleParam != "" {
+		results, _ := repository.GetPagesByTitleWordGrep(searchTitleParam)
+		return results
+	}
+
+	if tagSearchParam != "" {
+		/*	searchPages := []model.Page{}
+			searchTag := tagSearchParam
+			for _, page := range allPages {
+				tags := strings.Split(page.Tags, ",")
+				for _, tag := range tags {
+					if searchTag == tag {
+						searchPages = append(searchPages, page)
+						break
+					}
+				}
+			}*/
+		results, _ := repository.GetPagesByTag(tagSearchParam)
+		return results
+	}
+
+	// content search case.
+	if contentSearchParam != "" {
+		word := contentSearchParam
+		results, _ := repository.GetPagesByContentSearch(word)
+		return results
+	}
+
+	pages, _ := repository.GetPages()
+	return pages
 }

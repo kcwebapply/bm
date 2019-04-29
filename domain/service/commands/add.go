@@ -40,14 +40,7 @@ func Add(c *cli.Context) {
 }
 
 func add(url string, title string, tags string, content string) model.Page {
-	allPages, _ := repository.GetPages()
-	pageSize := len(allPages)
-	var newID = 1
-	if pageSize > 0 {
-		newID = allPages[pageSize-1].ID + 1
-	}
-
-	newPage := model.Page{ID: newID, URL: url, Title: title, Tags: tags, Content: content}
+	newPage := model.Page{URL: url, Title: title, Tags: tags, Content: content}
 	repository.AddPage(newPage)
 	return newPage
 }
