@@ -37,7 +37,7 @@ func Ls(c *cli.Context) {
 
 	if c.String("s") != "" {
 		word := c.String("s")
-		allPages = searchPageContent(word, allPages)
+		allPages, _ = repository.GetPagesByTitleWordGrep(word)
 	}
 
 	view.PrintAllPage(allPages)
