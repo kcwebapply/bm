@@ -45,11 +45,10 @@ func init() {
 	}
 
 	terminalWidth = int(ws.Col)
-
 	if terminalWidth > 165 {
 		titlePadding = 132
 	} else {
-		titlePadding = terminalWidth - (idColumnSize + tagColumnSize)
+		titlePadding = terminalWidth - (40 + tagColumnSize)
 	}
 	tagPadding = terminalWidth - 40
 }
