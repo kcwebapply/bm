@@ -73,11 +73,11 @@ func printHeader() {
 	fmt.Println(line)
 }
 
-// PrintAllMemoPage is function of printing message when showing all page.
+// PrintAllPage is function of printing message when showing all page.
 func PrintAllPage(datas []model.Page) {
 	printHeader()
-	for _, data := range datas {
-		printPage(data)
+	for _, page := range datas {
+		printPage(page)
 	}
 }
 
@@ -89,10 +89,8 @@ func PrintAdd(data model.Page) {
 }
 
 // PrintRm is function of printing message when deleting page.
-func PrintRm(data model.Page) {
-	printHeader()
-	printPage(data)
-	fmt.Println("\x1b[1m\x1b[38;5;39mbookmark deleted!\x1b[0m")
+func PrintRm(id string) {
+	fmt.Printf("\x1b[1m\x1b[38;5;39mbookmark %s deleted!\x1b[0m\n", id)
 }
 
 // PrintTags printing Tags

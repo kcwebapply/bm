@@ -22,7 +22,7 @@ func Commands() []cli.Command {
 		},
 		{
 			Name:    "ls",
-			Aliases: []string{"l"},
+			Aliases: []string{"l", ""},
 			Usage:   "view bookmark list.",
 			Action:  Ls,
 			Flags: []cli.Flag{
