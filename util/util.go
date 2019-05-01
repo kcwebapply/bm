@@ -24,7 +24,6 @@ func TextCounter(text string) int {
 	textCounter := 0
 	befPos := 0
 	for pos := range text {
-		// this check is where character is Japanase or not.
 		if pos-befPos == 3 {
 			textCounter += 2 // to treat japanese character as 2byte.
 			befPos = pos

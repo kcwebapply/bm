@@ -16,8 +16,7 @@ import (
 var (
 	terminalWidth       int
 	idPadding           = 3
-	titlePadding        = 35
-	urlPadding          int
+	titlePadding        = 135
 	tagPadding          int
 	minimumTerminalSize = 68
 )
@@ -46,18 +45,17 @@ func init() {
 	}
 
 	terminalWidth = int(ws.Col)
-
 	if terminalWidth > 165 {
-		urlPadding = titlePadding + 100
+		titlePadding = 132
 	} else {
-		urlPadding = terminalWidth - tagColumnSize
+		titlePadding = terminalWidth - (40 + tagColumnSize)
 	}
-	tagPadding = urlPadding + tagColumnSize
+	tagPadding = terminalWidth - 40
 }
 
 func printHeader() {
 	nonPrintedCaracterSize := 0
-	echo := "|"
+	echo := ""
 	echo += idColor
 	nonPrintedCaracterSize += 19
 	echo = spacePadding(echo, "id", idPadding+nonPrintedCaracterSize)
@@ -65,26 +63,21 @@ func printHeader() {
 	echo += titleColor
 	nonPrintedCaracterSize += 19
 	echo = spacePadding(echo, "title", titlePadding+nonPrintedCaracterSize)
-	echo += "|"
-	echo += urlColor
-	nonPrintedCaracterSize += 19
-	echo = spacePadding(echo, "", urlPadding+nonPrintedCaracterSize)
+	echo = spacePadding(echo, "", terminalWidth-40+nonPrintedCaracterSize)
 	echo += "|"
 	echo += tagColor
-	nonPrintedCaracterSize += 17
-	echo = spacePadding(echo, "", tagPadding+nonPrintedCaracterSize)
-	echo += "|"
-	line := strings.Repeat("-", len(echo)-76)
-	fmt.Println(line)
+
+	line := strings.Repeat("-", terminalWidth-10)
+	//fmt.Println(line)
 	fmt.Println(echo)
 	fmt.Println(line)
 }
 
-// PrintAllMemoPage is function of printing message when showing all page.
+// PrintAllPage is function of printing message when showing all page.
 func PrintAllPage(datas []model.Page) {
 	printHeader()
-	for _, data := range datas {
-		printPage(data)
+	for _, page := range datas {
+		printPage(page)
 	}
 }
 
@@ -96,10 +89,8 @@ func PrintAdd(data model.Page) {
 }
 
 // PrintRm is function of printing message when deleting page.
-func PrintRm(data model.Page) {
-	printHeader()
-	printPage(data)
-	fmt.Println("\x1b[1m\x1b[38;5;39mbookmark deleted!\x1b[0m")
+func PrintRm(id string) {
+	fmt.Printf("\x1b[1m\x1b[38;5;39mbookmark %s deleted!\x1b[0m\n", id)
 }
 
 // PrintTags printing Tags
@@ -135,12 +126,11 @@ func printPage(data model.Page) {
 	echo += data.Title
 	echo = spacePadding(echo, data.Title, titlePadding)
 	echo += "|"
-	echo += shortURL(data.URL)
-	echo = spacePadding(echo, shortURL(data.URL), urlPadding)
-	echo += "|"
+	echo = spacePadding(echo, shortTitle(data.Title), titlePadding)
 	tagString := data.Tags
+	echo = spacePadding(echo, "", terminalWidth-40)
+	echo += "|"
 	echo += tagString
-	echo = spacePadding(echo, tagString, tagPadding)
 	fmt.Println(echo)
 }
 
@@ -161,14 +151,14 @@ func spacePadding(text string, content string, num int) string {
 	return text + spaces
 }
 
-func shortURL(url string) string {
-	var urlReductedSize = urlPadding - titlePadding
-	if len(url) >= urlReductedSize {
-		shortURL := url[0 : urlReductedSize-5]
-		shortURL += "..."
-		return shortURL
+func shortTitle(title string) string {
+	var titleReductedSize = titlePadding - idPadding
+	if len(title) >= titleReductedSize {
+		shortTitle := title[0 : titleReductedSize-5]
+		shortTitle += "..."
+		return shortTitle
 	}
-	return url
+	return title
 }
 
 type winsize struct {

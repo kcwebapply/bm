@@ -22,7 +22,7 @@ func Commands() []cli.Command {
 		},
 		{
 			Name:    "ls",
-			Aliases: []string{"l"},
+			Aliases: []string{"l", ""},
 			Usage:   "view bookmark list.",
 			Action:  Ls,
 			Flags: []cli.Flag{
@@ -50,6 +50,13 @@ func Commands() []cli.Command {
 			Aliases: []string{"r"},
 			Usage:   "delete bookmark ",
 			Action:  Rm,
+		},
+
+		{
+			Name:    "import",
+			Aliases: []string{"im"},
+			Usage:   "import bookmark from chrome bookmark file.",
+			Action:  Import,
 		},
 	}
 }
