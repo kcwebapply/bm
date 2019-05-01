@@ -51,5 +51,12 @@ func Commands() []cli.Command {
 			Usage:   "delete bookmark ",
 			Action:  Rm,
 		},
+
+		{
+			Name:    "import",
+			Aliases: []string{"im"},
+			Usage:   "import bookmark from chrome bookmark file.",
+			Action:  Import,
+		},
 	}
 }
