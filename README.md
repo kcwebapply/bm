@@ -1,10 +1,10 @@
 
 <img  src="image/bm.png" width="100px">
 
-[![GoDoc](https://godoc.org/github.com/kcwebapply/imemo?status.svg)](https://godoc.org/github.com/kcwebapply/imemo)
-![Go Report Card](https://goreportcard.com/badge/github.com/kcwebapply/imemo)
+[![GoDoc](https://godoc.org/github.com/kcwebapply/imemo?status.svg)](https://godoc.org/github.com/kcwebapply/bm)
+![Go Report Card](https://goreportcard.com/badge/github.com/kcwebapply/bm)
 [](https://github.com/gin-gonic/gin/releases)
-[![Release](https://img.shields.io/github/release/kcwebapply/imemo.svg?style=flat-square)](https://github.com/kcwebapply/iemo/release)
+[![Release](https://img.shields.io/github/release/kcwebapply/bm.svg?style=flat-square)](https://github.com/kcwebapply/bm/release)
 
 you can bookmark webpage and search by `title`, `tag`, `html-body`.
 
@@ -30,17 +30,20 @@ brew install bm
 
 listing all book. `bm ls` also available.
 
-<img src="image/ls.gif">
+<img src="https://imgur.com/jJdjTAU.png">
 
 
-By `bm ls -s ${word}`, you can search in bookmark's html contents (stored when you save bookmark `html-contents`.)
+By `bm ls -s ${word}`, you can search in html contents search.
+
+<img src="https://imgur.com/e2TdtjZ.png">
+
+
 
 By `bm ls ${searchWord}` , you can filtering bookmark by title.
 
 By `bm ls -t ${tagName}` , you can search bookmark by tag name.
 
-
-![sample-demo](image/tag.gif)
+(https://imgur.com/wsVVaOA.png)
 
 
 
@@ -48,16 +51,13 @@ By `bm ls -t ${tagName}` , you can search bookmark by tag name.
 `bm add ${url}`  `bm a ${url}`
 you can save bookmark by `bm add` command.
 
-![sample-demo](image/add.gif)
+<img src="https://imgur.com/fT3dRDk.png">
 
 you can set tags (max 3 tags) on your bookmark.
 
 
 ## delete bookmark
-`bm delete ${bookmark-id}` `bm d ${bookmark-id}`
-
-![sample-demo](image/del.gif)
-
+`bm rm ${bookmark-id}`
 
 To delete bookmark on you list, please input bookmark-id that automatically assigned to all bookmark.
 
@@ -65,6 +65,4 @@ you can confirm bookmark-id by `bm ls` command.
 
 ## open bookmark
 `bm open ${bookmark-id}`
-you can open bookmark from cli.
-
-![sample-demo](image/open.gif)
+you can open bookmark web-site from cli.
