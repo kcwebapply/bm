@@ -9,11 +9,6 @@
 you can bookmark webpage and search by `title`, `tag`, `html-body`.
 
 
-
-<img src="image/bm-sample.png" width="1000px"/>
-
-
-
 ## Installation
 
 ### On macOS
@@ -43,7 +38,7 @@ By `bm ls ${searchWord}` , you can filtering bookmark by title.
 
 By `bm ls -t ${tagName}` , you can search bookmark by tag name.
 
-(https://imgur.com/wsVVaOA.png)
+<img src="https://imgur.com/wsVVaOA.png">
 
 
 
@@ -54,6 +49,12 @@ you can save bookmark by `bm add` command.
 <img src="https://imgur.com/fT3dRDk.png">
 
 you can set tags (max 3 tags) on your bookmark.
+
+### import chrome bookmark
+`bm import {filepath}`
+you can import chrome bookmark export file.
+
+<img src="https://imgur.com/CwbWbQc.gif">
 
 
 ## delete bookmark
