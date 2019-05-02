@@ -43,7 +43,7 @@ By `bm ls -s ${word}`, you can search in html contents search.
 
 
 
-#### add bookmark
+### add bookmark
 `bm add ${url}`  `bm a ${url}`
 you can save bookmark by `bm add` command.
 
@@ -58,13 +58,13 @@ you can import chrome bookmark export file.
 <img src="https://imgur.com/CwbWbQc.gif">
 
 
-#### delete bookmark
+### delete bookmark
 `bm rm ${bookmark-id}`
 
 To delete bookmark on you list, please input bookmark-id that automatically assigned to all bookmark.
 
 you can confirm bookmark-id by `bm ls` command.
 
-#### open bookmark
+### open bookmark
 `bm open ${bookmark-id}`
 you can open bookmark web-site from cli.
