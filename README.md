@@ -9,40 +9,38 @@
 you can bookmark webpage and search by `title`, `tag`, `html-body`.
 
 
-## Installation
+# Installation
 
-### On macOS
+## On macOS
 
 ```
 brew tap kcwebapply/bm
 brew install bm
 ```
 
-## Usage
+# Usage
 
-### view bookmarks
+## view bookmarks
+
+## listing bookmarks
 `bm list` `bm ls`
-
-listing all book. `bm ls` also available.
-
 <img src="https://imgur.com/jJdjTAU.png">
 
-
+#### content-search
 By `bm ls -s ${word}`, you can search in html contents search.
-
 <img src="https://imgur.com/e2TdtjZ.png">
 
+#### title-grep
+`bm ls ${searchWord}` , you can filtering bookmark by title.
 
-
-By `bm ls ${searchWord}` , you can filtering bookmark by title.
-
-By `bm ls -t ${tagName}` , you can search bookmark by tag name.
+#### tag-search
+`bm ls -t ${tagName}` , you can search bookmark by tag name.
 
 <img src="https://imgur.com/wsVVaOA.png">
 
 
 
-### add bookmark
+## add bookmark
 `bm add ${url}`  `bm a ${url}`
 you can save bookmark by `bm add` command.
 
@@ -50,7 +48,7 @@ you can save bookmark by `bm add` command.
 
 you can set tags (max 3 tags) on your bookmark.
 
-### import chrome bookmark
+#### import chrome bookmark
 `bm import {filepath}`
 you can import chrome bookmark export file.
 
