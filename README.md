@@ -12,38 +12,38 @@
 you can bookmark webpage and search by `title`, `tag`, `html-body`.
 
 
-# Installation
+## Installation
 
-## On macOS
+### On macOS
 
 ```
 brew tap kcwebapply/bm
 brew install bm
 ```
 
-# Usage
+## Usage
 
-## view bookmarks
+### view bookmarks
 
-## listing bookmarks
+#### listing bookmarks
 `bm list` `bm ls`
 <img src="https://imgur.com/jJdjTAU.png">
 
-#### content-search
+###### content-search
 By `bm ls -s ${word}`, you can search in html contents search.
 <img src="https://imgur.com/e2TdtjZ.png">
 
-#### title-grep
+###### title-grep
 `bm ls ${searchWord}` , you can filtering bookmark by title.
 
-#### tag-search
+###### tag-search
 `bm ls -t ${tagName}` , you can search bookmark by tag name.
 
 <img src="https://imgur.com/wsVVaOA.png">
 
 
 
-## add bookmark
+#### add bookmark
 `bm add ${url}`  `bm a ${url}`
 you can save bookmark by `bm add` command.
 
@@ -51,20 +51,20 @@ you can save bookmark by `bm add` command.
 
 you can set tags (max 3 tags) on your bookmark.
 
-#### import chrome bookmark
+###### import chrome bookmark
 `bm import {filepath}`
 you can import chrome bookmark export file.
 
 <img src="https://imgur.com/CwbWbQc.gif">
 
 
-## delete bookmark
+#### delete bookmark
 `bm rm ${bookmark-id}`
 
 To delete bookmark on you list, please input bookmark-id that automatically assigned to all bookmark.
 
 you can confirm bookmark-id by `bm ls` command.
 
-## open bookmark
+#### open bookmark
 `bm open ${bookmark-id}`
 you can open bookmark web-site from cli.
