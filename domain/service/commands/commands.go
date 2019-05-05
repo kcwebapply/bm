@@ -12,7 +12,7 @@ func Commands() []cli.Command {
 			Name:    "add",
 			Aliases: []string{"a"},
 			Usage:   "register web page on bm.",
-			Action:  Add,
+			Action:  AddCmd.Cmd,
 		},
 		{
 			Name:    "open",

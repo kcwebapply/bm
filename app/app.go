@@ -1,6 +1,8 @@
 package app
 
 import (
+	"log"
+
 	"github.com/codegangsta/cli"
 	commands "github.com/kcwebapply/bm/domain/service/commands"
 )
@@ -18,6 +20,10 @@ func InitApp() *cli.App {
 	app.Commands = commands.Commands()
 
 	app.Before = func(c *cli.Context) error {
+		err := ArgumentSizeValidator(c)
+		if err != nil {
+			log.Fatal(err)
+		}
 		return nil
 	}
 
