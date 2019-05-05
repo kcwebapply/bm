@@ -18,11 +18,6 @@ func Import(c *cli.Context) {
 
 	var bookmarkFilePath = c.Args().Get(0)
 
-	// path validation
-	if bookmarkFilePath == "" {
-		log.Fatal("argument error. please input bookmark file on argument 1.")
-	}
-
 	imports(bookmarkFilePath)
 }
 

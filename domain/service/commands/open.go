@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"os"
 	"strconv"
 
 	"github.com/codegangsta/cli"
@@ -12,9 +11,6 @@ import (
 // Open open bookmark website
 func Open(c *cli.Context) {
 	id := c.Args().Get(0)
-	if id == "" {
-		os.Exit(0)
-	}
 	open(id)
 }
 
