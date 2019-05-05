@@ -17,7 +17,6 @@ func Add(c *cli.Context) {
 
 	url := c.Args().Get(0)
 
-	//tags, _ := util.GetTerminalInput("tags (input few tags by ',')")
 	var tagList = []string{}
 	for i := 1; i <= 3; i++ {
 		var tag = c.Args().Get(i)
