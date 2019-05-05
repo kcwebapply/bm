@@ -10,7 +10,6 @@ import (
 	"unsafe"
 
 	"github.com/kcwebapply/bm/domain/model"
-	"github.com/kcwebapply/bm/util"
 )
 
 var (
@@ -135,7 +134,7 @@ func printPage(data model.Page) {
 }
 
 func spacePadding(text string, content string, num int) string {
-	textLength := util.TextCounter(text)
+	textLength := textCounter(text)
 	space := num - textLength
 	rep := regexp.MustCompile("^([a-zA-Z0-9])+$")
 
@@ -159,6 +158,21 @@ func shortTitle(title string) string {
 		return shortTitle
 	}
 	return title
+}
+
+func textCounter(text string) int {
+	textCounter := 0
+	befPos := 0
+	for pos := range text {
+		if pos-befPos == 3 {
+			textCounter += 2 // to treat japanese character as 2byte.
+			befPos = pos
+		} else {
+			textCounter++
+			befPos = pos
+		}
+	}
+	return textCounter
 }
 
 type winsize struct {

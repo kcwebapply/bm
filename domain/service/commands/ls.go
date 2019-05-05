@@ -12,6 +12,7 @@ import (
 
 // Ls returns bookmark list
 func Ls(c *cli.Context) {
+
 	pages, err := ls(c)
 	if err != nil {
 		fmt.Println(err)
