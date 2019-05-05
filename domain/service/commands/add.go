@@ -25,11 +25,6 @@ func Add(c *cli.Context) {
 			tagList = append(tagList, tag)
 		}
 	}
-	tagSize := len(tagList)
-	if tagSize > 3 {
-		fmt.Println("tag size error. you can't put more than 3 tags on your bookmark.")
-		os.Exit(0)
-	}
 
 	newPage, err := add(url, strings.Join(tagList, ","))
 	if err != nil {
