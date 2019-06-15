@@ -2,44 +2,45 @@ package commands
 
 import (
 	"fmt"
-	"os"
+	"net/url"
 	"strings"
 
 	"github.com/codegangsta/cli"
 	"github.com/kcwebapply/bm/domain/model"
 	"github.com/kcwebapply/bm/domain/repository"
 	"github.com/kcwebapply/bm/infrastructure/http"
+	"github.com/kcwebapply/bm/util"
 	"github.com/kcwebapply/bm/view"
 )
 
 // Add saves pagedata
 func Add(c *cli.Context) {
 
-	url := c.Args().Get(0)
+	urlString := c.Args().Get(0)
 
-	var tagList = []string{}
-	for i := 1; i <= 3; i++ {
-		var tag = c.Args().Get(i)
-		if tag != "" {
-			tagList = append(tagList, tag)
-		}
+	if _, err := url.Parse(urlString); err != nil {
+		util.LoggingError(fmt.Sprintf("failed to parse URL %q: %s", urlString, err))
 	}
 
-	newPage, err := add(url, strings.Join(tagList, ","))
+	var tagList = c.Args().Tail()
+
+	newPage, err := add(urlString, tagList)
+
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(0)
+		util.LoggingError(fmt.Sprintf("add commands error %s", err))
 	}
 
 	view.PrintAdd(*newPage)
 }
 
-func add(url string, tags string) (*model.Page, error) {
+func add(url string, tags []string) (*model.Page, error) {
 	title, content, err := http.GetContent(url)
 	if err != nil {
 		return nil, err
 	}
-	newPage := model.Page{URL: url, Title: *title, Tags: tags, Content: *content}
+
+	var tagStrings = strings.Join(tags, ",")
+	newPage := model.Page{URL: url, Title: *title, Tags: tagStrings, Content: *content}
 	err = repository.AddPage(newPage)
 	if err != nil {
 		return nil, err

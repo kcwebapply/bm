@@ -34,6 +34,7 @@ func ls(c *cli.Context) (*[]model.Page, error) {
 	if grepModeParam {
 		pages, err = grep(*pages, err)
 	}
+
 	return pages, err
 }
 
@@ -67,41 +68,48 @@ func searchPages(c *cli.Context) (*[]model.Page, error) {
 }
 
 func searchByTitle(searchTitleParam string) (*[]model.Page, error) {
+
 	results, err := repository.GetPagesByTitleWordGrep(searchTitleParam)
 	if err != nil {
 		return nil, err
 	}
+
 	return &results, err
 }
 
 func searchByTag(searchTagParam string) (*[]model.Page, error) {
+
 	results, err := repository.GetPagesByTag(searchTagParam)
 	if err != nil {
 		return nil, err
 	}
+
 	return &results, err
 }
 
 func searchByContent(contentSearchParam string) (*[]model.Page, error) {
+
 	results, err := repository.GetPagesByContentSearch(contentSearchParam)
 	if err != nil {
 		return nil, err
 	}
+
 	return &results, err
 }
 
 func grep(pages []model.Page, err error) (*[]model.Page, error) {
+
 	view.PrintAllPage(pages)
+
 	fmt.Println("(title grep) >>>")
 	scanner := bufio.NewScanner(os.Stdin)
 	scanned := scanner.Scan()
 	if !scanned {
 		err = errors.New("get input error")
 	}
-
 	grepInput := scanner.Text()
-	grepPages := []model.Page{}
 
+	grepPages := []model.Page{}
 	for _, page := range pages {
 		if strings.Contains(page.Title, grepInput) {
 			grepPages = append(grepPages, page)
