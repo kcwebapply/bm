@@ -37,6 +37,11 @@ func Commands() []cli.Command {
 					Value: "",
 					Usage: "content search parameter (receive word argument)",
 				},
+
+				cli.BoolFlag{
+					Name:  "g,grep",
+					Usage: "grep mode parameter",
+				},
 			},
 		},
 		{

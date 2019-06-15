@@ -20,7 +20,7 @@ type CommandEnum struct {
 
 // EnumValueList
 var (
-	LsCmd     = CommandEnum{"ls", 3, errors.New("argument size error. ls command can be used by -t ${tagName},-s ${searchWord} format. "), Ls}
+	LsCmd     = CommandEnum{"ls", 4, errors.New("argument size error. ls command can be used by -t ${tagName},-s ${searchWord} format and -g(grepmode option). "), Ls}
 	AddCmd    = CommandEnum{"add", 5, errors.New("argument size error. add command can receive bookmarkId  and up to three tags. "), Add}
 	RmCmd     = CommandEnum{"rm", 2, errors.New("argument size error. rm command can receive only bookmarkId . "), Rm}
 	ImportCmd = CommandEnum{"import", 2, errors.New("argument size error. import command can receive chrome'sbookmark export file. "), Import}
