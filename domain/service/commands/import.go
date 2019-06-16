@@ -2,7 +2,6 @@ package commands
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"time"
 
@@ -11,6 +10,7 @@ import (
 	"github.com/kcwebapply/bm/domain/model"
 	"github.com/kcwebapply/bm/domain/repository"
 	"github.com/kcwebapply/bm/infrastructure/http"
+	"github.com/kcwebapply/bm/util"
 )
 
 // Import import chrome bookmark exports data on page-db.
@@ -26,13 +26,13 @@ func imports(bookmarkFilePath string) {
 	var urlList = []string{}
 	f, e := os.Open(bookmarkFilePath)
 	if e != nil {
-		log.Fatal(e)
+		util.LoggingError(e.Error())
 	}
 	defer f.Close()
 	// goquery
 	var doc *goquery.Document
 	if doc, e = goquery.NewDocumentFromReader(f); e != nil {
-		log.Fatal(e)
+		util.LoggingError(e.Error())
 	}
 
 	//get bookmark urllist from bookmark file.
@@ -45,13 +45,13 @@ func imports(bookmarkFilePath string) {
 	for _, url := range urlList {
 		title, content, err := http.GetContent(url)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Printf("http error getting : %s \n ", url)
 			continue
 		}
 		newPage := model.Page{URL: url, Title: *title, Content: *content}
 		err = repository.AddPage(newPage)
 		if err != nil {
-			fmt.Println("err!", err)
+			fmt.Printf("saving page error : %s \n ", err.Error())
 			continue
 		}
 		fmt.Printf("page \"%s\" saved!\n", *title)

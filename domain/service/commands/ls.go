@@ -11,6 +11,7 @@ import (
 	"github.com/codegangsta/cli"
 	"github.com/kcwebapply/bm/domain/model"
 	"github.com/kcwebapply/bm/domain/repository"
+	"github.com/kcwebapply/bm/util"
 	"github.com/kcwebapply/bm/view"
 )
 
@@ -19,8 +20,7 @@ func Ls(c *cli.Context) {
 
 	pages, err := ls(c)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(0)
+		util.LoggingError(fmt.Sprintf("Ls command error : %s", err.Error()))
 	}
 	view.PrintAllPage(*pages)
 }
