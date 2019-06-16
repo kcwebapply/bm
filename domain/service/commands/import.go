@@ -23,7 +23,6 @@ func Import(c *cli.Context) {
 
 func imports(bookmarkFilePath string) {
 
-	var urlList = []string{}
 	f, e := os.Open(bookmarkFilePath)
 	if e != nil {
 		util.LoggingError(e.Error())
@@ -36,6 +35,7 @@ func imports(bookmarkFilePath string) {
 	}
 
 	//get bookmark urllist from bookmark file.
+	var urlList = []string{}
 	doc.Find("a").Each(func(_ int, s *goquery.Selection) {
 		url, _ := s.Attr("href")
 		urlList = append(urlList, url)
@@ -43,11 +43,13 @@ func imports(bookmarkFilePath string) {
 
 	//page save loop
 	for _, url := range urlList {
+
 		title, content, err := http.GetContent(url)
 		if err != nil {
 			fmt.Printf("http error getting : %s \n ", url)
 			continue
 		}
+
 		newPage := model.Page{URL: url, Title: *title, Content: *content}
 		err = repository.AddPage(newPage)
 		if err != nil {
@@ -55,6 +57,7 @@ func imports(bookmarkFilePath string) {
 			continue
 		}
 		fmt.Printf("page \"%s\" saved!\n", *title)
+
 		time.Sleep(1 * time.Second)
 	}
 
