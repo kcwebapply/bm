@@ -1,10 +1,10 @@
 package db
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/gocraft/dbr"
+	"github.com/kcwebapply/bm/util"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/mitchellh/go-homedir"
 )
@@ -15,20 +15,19 @@ var conn *dbr.Connection
 func init() {
 	path, err := homedir.Dir()
 	if err != nil {
-		fmt.Println("dberr:", err)
+		util.LoggingError(err.Error())
 		os.Exit(0)
 	}
 	dbPath := path + "/page.db"
 	_, err = os.OpenFile(dbPath, os.O_WRONLY|os.O_CREATE, 0777)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(0)
+		util.LoggingError(err.Error())
 	}
 
 	connection, err := dbr.Open("sqlite3", dbPath, nil)
 	if err != nil {
-		fmt.Println("error happened in connection:", err)
-		os.Exit(0)
+		util.LoggingError(err.Error())
+
 	}
 	conn = connection
 }

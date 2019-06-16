@@ -1,18 +1,12 @@
 package model
 
-import (
-	"strconv"
-)
-
-// Page type is struct of one page data.
+// Page type is struct of one webpage data.
+// Id is primary key of bookmark page.
+// Title is webpage's title  and Content is webpage's html body. Both of them got by http request.
 type Page struct {
 	ID      int
 	URL     string
 	Title   string
 	Tags    string
 	Content string
-}
-
-func (page *Page) String() string {
-	return strconv.Itoa(page.ID) + " " + page.URL + " " + page.Title + " " + page.Tags + "\n"
 }

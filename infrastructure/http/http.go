@@ -1,6 +1,7 @@
 package http
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -22,6 +23,9 @@ func GetContent(u string) (*string, *string, error) {
 		return nil, nil, httpGetError
 	}
 
+	if resp.StatusCode != 200 {
+		return nil, nil, fmt.Errorf("http request error ! %d", resp.StatusCode)
+	}
 	doc, _ := goquery.NewDocumentFromReader(resp.Body)
 	html, htmlGetError := doc.Html()
 	if htmlGetError != nil {

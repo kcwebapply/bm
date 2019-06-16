@@ -27,7 +27,7 @@ func Add(c *cli.Context) {
 	newPage, err := add(urlString, tagList)
 
 	if err != nil {
-		util.LoggingError(fmt.Sprintf("add commands error %s", err))
+		util.LoggingError(fmt.Sprintf("add commands error : %s", err))
 	}
 
 	view.PrintAdd(*newPage)

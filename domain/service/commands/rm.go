@@ -1,10 +1,9 @@
 package commands
 
 import (
-	"log"
-
 	"github.com/codegangsta/cli"
 	"github.com/kcwebapply/bm/domain/repository"
+	"github.com/kcwebapply/bm/util"
 	"github.com/kcwebapply/bm/view"
 )
 
@@ -15,7 +14,7 @@ func Rm(c *cli.Context) {
 	err := rm(id)
 
 	if err != nil {
-		log.Fatal(err)
+		util.LoggingError(err.Error())
 	}
 
 	view.PrintRm(id)
