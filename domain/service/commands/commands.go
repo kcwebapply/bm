@@ -42,6 +42,11 @@ func Commands() []cli.Command {
 					Name:  "g,grep",
 					Usage: "grep mode parameter",
 				},
+
+				cli.BoolFlag{
+					Name:  "j,json",
+					Usage: "output results by json",
+				},
 			},
 		},
 		{

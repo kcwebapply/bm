@@ -1,6 +1,7 @@
 package view
 
 import (
+	"encoding/json"
 	"fmt"
 	"regexp"
 	"sort"
@@ -78,6 +79,30 @@ func PrintAllPage(datas []model.Page) {
 	for _, page := range datas {
 		printPage(page)
 	}
+}
+
+func PrintByJson(datas []model.Page) {
+
+	type OutputFormat struct {
+		ID    int
+		URL   string
+		Title string
+		Tags  string
+	}
+
+	var outputDatas = []OutputFormat{}
+
+	for _, data := range datas {
+		var outputData = OutputFormat{
+			ID:    data.ID,
+			URL:   data.URL,
+			Title: data.Title,
+			Tags:  data.Tags,
+		}
+		outputDatas = append(outputDatas, outputData)
+	}
+	json, _ := json.Marshal(outputDatas)
+	fmt.Println(string(json))
 }
 
 // PrintAdd is function of printing message when saving page.

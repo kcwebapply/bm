@@ -22,7 +22,12 @@ func Ls(c *cli.Context) {
 	if err != nil {
 		util.LoggingError(fmt.Sprintf("Ls command error : %s", err.Error()))
 	}
-	view.PrintAllPage(*pages)
+
+	if c.String("j") != "" {
+		view.PrintByJson(*pages)
+	} else {
+		view.PrintAllPage(*pages)
+	}
 }
 
 func ls(c *cli.Context) (*[]model.Page, error) {
@@ -43,7 +48,6 @@ func searchPages(c *cli.Context) (*[]model.Page, error) {
 	var searchTitleParam = c.Args().Get(0)
 	var tagSearchParam = c.String("t")
 	var contentSearchParam = c.String("s")
-
 	// title search case.
 	if searchTitleParam != "" {
 		return searchByTitle(searchTitleParam)
